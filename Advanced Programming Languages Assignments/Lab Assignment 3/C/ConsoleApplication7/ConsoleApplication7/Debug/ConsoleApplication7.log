@@ -1,0 +1,8 @@
+﻿  stdafx.cpp
+  ConsoleApplication7.cpp
+d:\ms\1st semester\pl\assignment\assignment 3 final\c\consoleapplication7\consoleapplication7\consoleapplication7.cpp(29): warning C4244: 'return': conversion from 'double' to 'int', possible loss of data
+d:\ms\1st semester\pl\assignment\assignment 3 final\c\consoleapplication7\consoleapplication7\consoleapplication7.cpp(36): warning C4013: 'strcmp' undefined; assuming extern returning int
+d:\ms\1st semester\pl\assignment\assignment 3 final\c\consoleapplication7\consoleapplication7\consoleapplication7.cpp(64): warning C4090: 'function': different 'const' qualifiers
+d:\ms\1st semester\pl\assignment\assignment 3 final\c\consoleapplication7\consoleapplication7\consoleapplication7.cpp(85): warning C4013: 'getch' undefined; assuming extern returning int
+  ConsoleApplication7.vcxproj -> D:\MS\1st Semester\PL\Assignment\Assignment 3 Final\C\ConsoleApplication7\Debug\ConsoleApplication7.exe
+  ConsoleApplication7.vcxproj -> D:\MS\1st Semester\PL\Assignment\Assignment 3 Final\C\ConsoleApplication7\Debug\ConsoleApplication7.pdb (Partial PDB)

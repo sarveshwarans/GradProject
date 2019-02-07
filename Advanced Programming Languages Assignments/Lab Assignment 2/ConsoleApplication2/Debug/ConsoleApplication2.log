@@ -1,0 +1,9 @@
+﻿  ConsoleApplication2.cpp
+c:\users\sarve\source\repos\consoleapplication2\consoleapplication2\consoleapplication2.cpp(25): warning C4013: 'malloc' undefined; assuming extern returning int
+c:\users\sarve\source\repos\consoleapplication2\consoleapplication2\consoleapplication2.cpp(25): warning C4047: '=': 'Block *' differs in levels of indirection from 'int'
+c:\users\sarve\source\repos\consoleapplication2\consoleapplication2\consoleapplication2.cpp(58): warning C4047: 'function': 'int' differs in levels of indirection from 'int [100]'
+c:\users\sarve\source\repos\consoleapplication2\consoleapplication2\consoleapplication2.cpp(58): warning C4024: 'my_initialize_heap': different types for formal and actual parameter 1
+c:\users\sarve\source\repos\consoleapplication2\consoleapplication2\consoleapplication2.cpp(126): warning C4022: 'my_free': pointer mismatch for actual parameter 1
+c:\users\sarve\source\repos\consoleapplication2\consoleapplication2\consoleapplication2.cpp(151): warning C4013: 'getch' undefined; assuming extern returning int
+  ConsoleApplication2.vcxproj -> c:\users\sarve\source\repos\ConsoleApplication2\Debug\ConsoleApplication2.exe
+  ConsoleApplication2.vcxproj -> c:\users\sarve\source\repos\ConsoleApplication2\Debug\ConsoleApplication2.pdb (Partial PDB)

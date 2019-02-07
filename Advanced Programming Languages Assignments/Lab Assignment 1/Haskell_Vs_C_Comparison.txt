@@ -1,0 +1,11 @@
+Differences found between C and Haskell while implementing Quick and Merge Sort algorithms are as follows
+
+--In Haskell, we were able to pass function as input to another function. Example - msort xs = merge (msort (firstHalfOfList xs)) (msort (lastHalfOfList xs)). This was not possible in C.
+--The variables in C were mutable. But in case of Haskell they were immutable.
+--Too many variable declarations were required in C to implement these algorithms when compared to Haskell implementation.
+--The type of the variables were handled by itself in Haskell whereas in C we had to explicitly mention the type of the variable 
+--Coding on Haskell was bit tricky considering the complex syntax (at least for the amateurs) when compared with C.
+--Readability(Understanding) of the code seems to be better in Haskell when compared to C.
+--Manual allocation of memory was required in C which when compared with Haskell was better handled by itself.
+--Debugging in C allowed us to debug step by step. But in case of Haskell, we had to test each and every function separately before putting it in right place as a full module. Hence Debugging was little easier with C when compared with Haskell.
+--The number of lines of code needed to implement these algorithms were very less in Haskell when compared with C.
