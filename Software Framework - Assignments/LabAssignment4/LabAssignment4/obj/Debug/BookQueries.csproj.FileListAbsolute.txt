@@ -1,0 +1,62 @@
+C:\Harsh\Documents\Study Documents\NET\Assignment 5\BooksExamples\BooksExamples\JoinQueries\bin\Debug\Books.mdf
+C:\Harsh\Documents\Study Documents\NET\Assignment 5\BooksExamples\BooksExamples\JoinQueries\bin\Debug\Books_log.ldf
+C:\Harsh\Documents\Study Documents\NET\Assignment 5\BooksExamples\BooksExamples\JoinQueries\bin\Debug\JoinQueries.exe.config
+C:\Harsh\Documents\Study Documents\NET\Assignment 5\BooksExamples\BooksExamples\JoinQueries\bin\Debug\JoinQueries.exe
+C:\Harsh\Documents\Study Documents\NET\Assignment 5\BooksExamples\BooksExamples\JoinQueries\bin\Debug\JoinQueries.pdb
+C:\Harsh\Documents\Study Documents\NET\Assignment 5\BooksExamples\BooksExamples\JoinQueries\bin\Debug\EntityFramework.dll
+C:\Harsh\Documents\Study Documents\NET\Assignment 5\BooksExamples\BooksExamples\JoinQueries\bin\Debug\EntityFramework.xml
+C:\Harsh\Documents\Study Documents\NET\Assignment 5\BooksExamples\BooksExamples\JoinQueries\obj\Debug\JoinQueries.Properties.Resources.resources
+C:\Harsh\Documents\Study Documents\NET\Assignment 5\BooksExamples\BooksExamples\JoinQueries\obj\Debug\BookQueries.csproj.GenerateResource.Cache
+C:\Harsh\Documents\Study Documents\NET\Assignment 5\BooksExamples\BooksExamples\JoinQueries\obj\Debug\JoinQueries.exe
+C:\Harsh\Documents\Study Documents\NET\Assignment 5\BooksExamples\BooksExamples\JoinQueries\obj\Debug\JoinQueries.pdb
+C:\Harsh\Documents\Study Documents\NET\Assignment 5\BooksExamples\BooksExamples\JoinQueries\obj\Debug\BookQueries.BooksQueryForm.resources
+C:\Harsh\Documents\Study Documents\NET\Assignment 5\BooksExamples\BooksExamples\JoinQueries\obj\Debug\BookQueries.JoiningTableData.resources
+C:\Harsh\Documents\Study Documents\NET\Assignment 5\BooksExamples\BooksExamples\JoinQueries\obj\Debug\BookQueries.csprojResolveAssemblyReference.cache
+C:\Users\sanka\Desktop\new\Assignment 5\Assignment 5\BooksExamples\BooksExamples\JoinQueries\bin\Debug\Books.mdf
+C:\Users\sanka\Desktop\new\Assignment 5\Assignment 5\BooksExamples\BooksExamples\JoinQueries\bin\Debug\Books_log.ldf
+C:\Users\sanka\Desktop\new\Assignment 5\Assignment 5\BooksExamples\BooksExamples\JoinQueries\bin\Debug\JoinQueries.exe.config
+C:\Users\sanka\Desktop\new\Assignment 5\Assignment 5\BooksExamples\BooksExamples\JoinQueries\bin\Debug\JoinQueries.exe
+C:\Users\sanka\Desktop\new\Assignment 5\Assignment 5\BooksExamples\BooksExamples\JoinQueries\bin\Debug\JoinQueries.pdb
+C:\Users\sanka\Desktop\new\Assignment 5\Assignment 5\BooksExamples\BooksExamples\JoinQueries\bin\Debug\EntityFramework.dll
+C:\Users\sanka\Desktop\new\Assignment 5\Assignment 5\BooksExamples\BooksExamples\JoinQueries\bin\Debug\EntityFramework.xml
+C:\Users\sanka\Desktop\new\Assignment 5\Assignment 5\BooksExamples\BooksExamples\JoinQueries\obj\Debug\BookQueries.csprojAssemblyReference.cache
+C:\Users\sanka\Desktop\new\Assignment 5\Assignment 5\BooksExamples\BooksExamples\JoinQueries\obj\Debug\BookQueries.BooksQueryForm.resources
+C:\Users\sanka\Desktop\new\Assignment 5\Assignment 5\BooksExamples\BooksExamples\JoinQueries\obj\Debug\BookQueries.JoiningTableData.resources
+C:\Users\sanka\Desktop\new\Assignment 5\Assignment 5\BooksExamples\BooksExamples\JoinQueries\obj\Debug\JoinQueries.Properties.Resources.resources
+C:\Users\sanka\Desktop\new\Assignment 5\Assignment 5\BooksExamples\BooksExamples\JoinQueries\obj\Debug\BookQueries.csproj.GenerateResource.cache
+C:\Users\sanka\Desktop\new\Assignment 5\Assignment 5\BooksExamples\BooksExamples\JoinQueries\obj\Debug\BookQueries.csproj.CoreCompileInputs.cache
+C:\Users\sanka\Desktop\new\Assignment 5\Assignment 5\BooksExamples\BooksExamples\JoinQueries\obj\Debug\BookQueries.csproj.CopyComplete
+C:\Users\sanka\Desktop\new\Assignment 5\Assignment 5\BooksExamples\BooksExamples\JoinQueries\obj\Debug\JoinQueries.exe
+C:\Users\sanka\Desktop\new\Assignment 5\Assignment 5\BooksExamples\BooksExamples\JoinQueries\obj\Debug\JoinQueries.pdb
+C:\Users\sanka\source\repos\BooksExamples\JoinQueries\bin\Debug\Books.mdf
+C:\Users\sanka\source\repos\BooksExamples\JoinQueries\bin\Debug\Books_log.ldf
+C:\Users\sanka\source\repos\BooksExamples\JoinQueries\bin\Debug\JoinQueries.exe.config
+C:\Users\sanka\source\repos\BooksExamples\JoinQueries\bin\Debug\JoinQueries.exe
+C:\Users\sanka\source\repos\BooksExamples\JoinQueries\bin\Debug\JoinQueries.pdb
+C:\Users\sanka\source\repos\BooksExamples\JoinQueries\bin\Debug\EntityFramework.dll
+C:\Users\sanka\source\repos\BooksExamples\JoinQueries\bin\Debug\EntityFramework.xml
+C:\Users\sanka\source\repos\BooksExamples\JoinQueries\obj\Debug\BookQueries.csprojAssemblyReference.cache
+C:\Users\sanka\source\repos\BooksExamples\JoinQueries\obj\Debug\BookQueries.BooksQueryForm.resources
+C:\Users\sanka\source\repos\BooksExamples\JoinQueries\obj\Debug\BookQueries.JoiningTableData.resources
+C:\Users\sanka\source\repos\BooksExamples\JoinQueries\obj\Debug\JoinQueries.Properties.Resources.resources
+C:\Users\sanka\source\repos\BooksExamples\JoinQueries\obj\Debug\BookQueries.csproj.GenerateResource.cache
+C:\Users\sanka\source\repos\BooksExamples\JoinQueries\obj\Debug\BookQueries.csproj.CoreCompileInputs.cache
+C:\Users\sanka\source\repos\BooksExamples\JoinQueries\obj\Debug\BookQueries.csproj.CopyComplete
+C:\Users\sanka\source\repos\BooksExamples\JoinQueries\obj\Debug\JoinQueries.exe
+C:\Users\sanka\source\repos\BooksExamples\JoinQueries\obj\Debug\JoinQueries.pdb
+D:\MS\Summent Semester\Software Framework\Delete\BooksExamples\BooksExamples\JoinQueries\bin\Debug\Books.mdf
+D:\MS\Summent Semester\Software Framework\Delete\BooksExamples\BooksExamples\JoinQueries\bin\Debug\Books_log.ldf
+D:\MS\Summent Semester\Software Framework\Delete\BooksExamples\BooksExamples\JoinQueries\bin\Debug\JoinQueries.exe.config
+D:\MS\Summent Semester\Software Framework\Delete\BooksExamples\BooksExamples\JoinQueries\bin\Debug\JoinQueries.exe
+D:\MS\Summent Semester\Software Framework\Delete\BooksExamples\BooksExamples\JoinQueries\bin\Debug\JoinQueries.pdb
+D:\MS\Summent Semester\Software Framework\Delete\BooksExamples\BooksExamples\JoinQueries\bin\Debug\EntityFramework.dll
+D:\MS\Summent Semester\Software Framework\Delete\BooksExamples\BooksExamples\JoinQueries\bin\Debug\EntityFramework.xml
+D:\MS\Summent Semester\Software Framework\Delete\BooksExamples\BooksExamples\JoinQueries\obj\Debug\BookQueries.csprojAssemblyReference.cache
+D:\MS\Summent Semester\Software Framework\Delete\BooksExamples\BooksExamples\JoinQueries\obj\Debug\BookQueries.BooksQueryForm.resources
+D:\MS\Summent Semester\Software Framework\Delete\BooksExamples\BooksExamples\JoinQueries\obj\Debug\BookQueries.JoiningTableData.resources
+D:\MS\Summent Semester\Software Framework\Delete\BooksExamples\BooksExamples\JoinQueries\obj\Debug\JoinQueries.Properties.Resources.resources
+D:\MS\Summent Semester\Software Framework\Delete\BooksExamples\BooksExamples\JoinQueries\obj\Debug\BookQueries.csproj.GenerateResource.cache
+D:\MS\Summent Semester\Software Framework\Delete\BooksExamples\BooksExamples\JoinQueries\obj\Debug\BookQueries.csproj.CoreCompileInputs.cache
+D:\MS\Summent Semester\Software Framework\Delete\BooksExamples\BooksExamples\JoinQueries\obj\Debug\BookQueries.csproj.CopyComplete
+D:\MS\Summent Semester\Software Framework\Delete\BooksExamples\BooksExamples\JoinQueries\obj\Debug\JoinQueries.exe
+D:\MS\Summent Semester\Software Framework\Delete\BooksExamples\BooksExamples\JoinQueries\obj\Debug\JoinQueries.pdb

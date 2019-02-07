@@ -1,0 +1,11 @@
+D:\MS\Summent Semester\Software Framework\Assignments\LabAssignment2\LabAssignment2\bin\Debug\netcoreapp2.0\LabAssignment2.deps.json
+D:\MS\Summent Semester\Software Framework\Assignments\LabAssignment2\LabAssignment2\bin\Debug\netcoreapp2.0\LabAssignment2.runtimeconfig.json
+D:\MS\Summent Semester\Software Framework\Assignments\LabAssignment2\LabAssignment2\bin\Debug\netcoreapp2.0\LabAssignment2.runtimeconfig.dev.json
+D:\MS\Summent Semester\Software Framework\Assignments\LabAssignment2\LabAssignment2\bin\Debug\netcoreapp2.0\LabAssignment2.dll
+D:\MS\Summent Semester\Software Framework\Assignments\LabAssignment2\LabAssignment2\bin\Debug\netcoreapp2.0\LabAssignment2.pdb
+D:\MS\Summent Semester\Software Framework\Assignments\LabAssignment2\LabAssignment2\obj\Debug\netcoreapp2.0\LabAssignment2.csprojAssemblyReference.cache
+D:\MS\Summent Semester\Software Framework\Assignments\LabAssignment2\LabAssignment2\obj\Debug\netcoreapp2.0\LabAssignment2.csproj.CoreCompileInputs.cache
+D:\MS\Summent Semester\Software Framework\Assignments\LabAssignment2\LabAssignment2\obj\Debug\netcoreapp2.0\LabAssignment2.AssemblyInfoInputs.cache
+D:\MS\Summent Semester\Software Framework\Assignments\LabAssignment2\LabAssignment2\obj\Debug\netcoreapp2.0\LabAssignment2.AssemblyInfo.cs
+D:\MS\Summent Semester\Software Framework\Assignments\LabAssignment2\LabAssignment2\obj\Debug\netcoreapp2.0\LabAssignment2.dll
+D:\MS\Summent Semester\Software Framework\Assignments\LabAssignment2\LabAssignment2\obj\Debug\netcoreapp2.0\LabAssignment2.pdb

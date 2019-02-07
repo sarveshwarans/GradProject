@@ -1,0 +1,36 @@
+﻿using LabAssignment3.ViewModel;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
+
+namespace LabAssignment3.View
+{
+    /// <summary>
+    /// Interaction logic for AddMember.xaml
+    /// </summary>
+    public partial class AddMember : Window,ICloseable
+    {
+        Window window = new Window();
+        public AddMember()
+        {
+            InitializeComponent();
+            this.DataContext = new AddViewModel();
+        }
+
+        void Close()
+        {
+            window.Close();
+        }
+
+    }
+}

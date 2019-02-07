@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>LabAssignment1</name>
+    </assembly>
+    <members>
+        <member name="M:LabAssignment1.IntegerSet.#ctor">
+            <summary>
+            Initialize all the elements of the array with the default value - FALSE.
+            </summary>
+        </member>
+        <member name="M:LabAssignment1.IntegerSet.#ctor(System.Int32[])">
+            <summary>
+            Initialize all the elements of the array with the default value - FALSE. 
+            Assign the value of the arrays element to TRUE if it the given input falls in the accepted range.
+            </summary>
+            <param name="intArray"></param>
+        </member>
+        <member name="M:LabAssignment1.IntegerSet.#ctor(System.Boolean[])">
+            <summary>
+            Assign the input array to the IntegerSet's boolArray.
+            </summary>
+            <param name="bArray"></param>
+        </member>
+        <member name="M:LabAssignment1.IntegerSet.InsertElement(System.Int32)">
+            <summary>
+            Set the value of the boolArray's element to TRUE - to indicate that the new element is added to the set.
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="M:LabAssignment1.IntegerSet.DeleteElement(System.Int32)">
+            <summary>
+            Set the value of the boolArray's element to FALSE - to indicate that the new element is deleted from the set.
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="M:LabAssignment1.IntegerSet.IsEqualTo(LabAssignment1.IntegerSet)">
+            <summary>
+            To check if both the input sets are equal or not.
+            </summary>
+            <param name="obj"></param>
+            <returns> Boolean value based on the input set. </returns>
+        </member>
+        <member name="M:LabAssignment1.IntegerSet.ToString">
+            <summary>
+            Returns a string containing a set as a list of numbers separated by spaces.
+            Only those elements that are present in the set are displayed.
+            Empty set is represented by "---".
+            </summary>
+            <returns> Returns a String containing elements that are present in the set. If empty then "---". </returns>
+        </member>
+        <member name="M:LabAssignment1.IntegerSet.Union(LabAssignment1.IntegerSet)">
+            <summary>
+            Union of two input sets are computed and stored in new set.
+            </summary>
+            <param name="obj"></param>
+            <returns> Returns IntegerSet object </returns>
+        </member>
+        <member name="M:LabAssignment1.IntegerSet.Intersection(LabAssignment1.IntegerSet)">
+            <summary>
+            Intersection of two input sets are computed and stored in new set.
+            </summary>
+            <param name="obj"></param>
+            <returns> Returns IntegerSet object </returns>
+        </member>
+        <member name="M:LabAssignment1.Program.InputSet(System.Int32)">
+            <summary>
+            Get the user input and fill the set with TRUE/FALSE by using InserElement()
+            </summary>
+            <param name="iNumSet"></param>
+            <returns> Returns IntegerSet object </returns>
+        </member>
+    </members>
+</doc>
