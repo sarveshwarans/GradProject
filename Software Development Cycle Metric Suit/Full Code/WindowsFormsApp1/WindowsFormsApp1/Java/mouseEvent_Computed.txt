@@ -1,0 +1,19 @@
+File Name : mouseEvent.java
+File Length In Bytes : 434
+File White Space : 54
+File Comment Size In Bytes : 0
+Comment Percentage : 0%
+Halstead Metrics: : 
+  Unique Operators : 21
+  Unique Operands : 14
+  Total Operators : 68
+  Total Operands : 34
+  Program Length (N) : 102
+  Program Vocabulory (n) : 35
+  Volume : 523.186867728387
+  Difficulty : 25.5
+  Effort : 13341.2651270739
+  Time : 741.181395948548 (12.35 Minutes (OR) 0.21 Hours (OR) 0.00147059800783442 Person Months )
+  Bugs Expected : 0.174395622576129
+McCabe's Cyclomatic Complexity : 
+  countRepeatedChars  :  3

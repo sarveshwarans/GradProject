@@ -1,0 +1,149 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Antlr3.3.5.1\build\Antlr3.props" Condition="Exists('..\packages\Antlr3.3.5.1\build\Antlr3.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{31C81F99-DABE-4D7D-AD70-4DA94F0BEBDC}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>WindowsFormsApp1</RootNamespace>
+    <AssemblyName>WindowsFormsApp1</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Antlr3.Runtime, Version=3.5.0.2, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Antlr3.Runtime.3.5.1\lib\net40-client\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="JavaMetrics.cs" />
+    <Compile Include="GetFPName.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GetFPName.Designer.cs">
+      <DependentUpon>GetFPName.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Home.Designer.cs">
+      <DependentUpon>Home.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Information.cs" />
+    <Compile Include="LanguageSelection.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LanguageSelection.Designer.cs">
+      <DependentUpon>LanguageSelection.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="ProjectNew.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ProjectNew.Designer.cs">
+      <DependentUpon>ProjectNew.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SaveXML.cs" />
+    <Compile Include="SMI_Test.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SMI_Test.Designer.cs">
+      <DependentUpon>SMI_Test.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ValueAdjustmentFactor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ValueAdjustmentFactor.Designer.cs">
+      <DependentUpon>ValueAdjustmentFactor.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="GetFPName.resx">
+      <DependentUpon>GetFPName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Home.resx">
+      <DependentUpon>Home.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LanguageSelection.resx">
+      <DependentUpon>LanguageSelection.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProjectNew.resx">
+      <DependentUpon>ProjectNew.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="SMI_Test.resx">
+      <DependentUpon>SMI_Test.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ValueAdjustmentFactor.resx">
+      <DependentUpon>ValueAdjustmentFactor.cs</DependentUpon>
+    </EmbeddedResource>
+    <Antlr3 Include="JavaJava.g3">
+      <CustomToolNamespace>WindowsFormsApp1</CustomToolNamespace>
+      <Generator>MSBuild:Compile</Generator>
+    </Antlr3>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Antlr3.3.5.1\build\Antlr3.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Antlr3.3.5.1\build\Antlr3.props'))" />
+    <Error Condition="!Exists('..\packages\Antlr3.3.5.1\build\Antlr3.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Antlr3.3.5.1\build\Antlr3.targets'))" />
+  </Target>
+  <Import Project="..\packages\Antlr3.3.5.1\build\Antlr3.targets" Condition="Exists('..\packages\Antlr3.3.5.1\build\Antlr3.targets')" />
+</Project>

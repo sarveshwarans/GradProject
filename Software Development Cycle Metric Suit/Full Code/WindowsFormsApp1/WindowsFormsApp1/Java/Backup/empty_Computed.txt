@@ -1,0 +1,20 @@
+File Name : empty.java
+File Length In Bytes : 300
+File White Space : 136
+File Comment Size In Bytes : 51
+Comment Percentage : 17%
+Halstead Metrics: : 
+  Unique Operators : 20
+  Unique Operands : 12
+  Total Operators : 39
+  Total Operands : 27
+  Program Length (N) : 66
+  Program Vocabulory (n) : 32
+  Volume : 330
+  Difficulty : 22.5
+  Effort : 7425
+  Time : 412.5
+  Bugs Expected : 0.11
+McCabe's Cyclomatic Complexity : 
+  test  :  4
+  Op1  :  1

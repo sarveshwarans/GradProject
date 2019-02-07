@@ -1,0 +1,943 @@
+
+grammar JavaJava;
+options {backtrack=true; memoize=true;
+	
+	output='AST';
+	
+	}
+//@parser::namespace {OOPIES}
+//@lexer::namespace {OOPIES}
+@header {
+using System;
+}
+
+@lexer::header {
+using System;
+using Antlr.Runtime;
+}
+@members {
+    public int cc = 0, ec=0;
+    String ca;
+    static public int linecount=0;
+    bool bextends = false, field=false, param=false;
+    bool primitive=false, classtype=false, local=false;
+    bool methodcall = false, constructorcall = false;
+    bool bimplements;
+    
+    bool	inPackage = false;
+    ////
+    bool	inMethod=false;
+    ////
+    
+    //McCabe var
+    int mmc = 0;
+    String methodName;
+    String PrimitiveType = "default";
+    String ClassType = "default";
+    String one, two;
+    String interfacemethodname;
+    int InterfaceFieldLine;
+    bool RHS=false, Assignment=false;
+    int LastKnownLine=0;
+    int classCount = 0;
+    public static int keywordCount = 0;
+    public static int specialcount = 0;
+    public static int identcount = 0;
+    ////////////////imports separate
+    public static int importKWCount=0;
+    public static int importIDCount=0;
+    /////////////////////////////////
+    String myID;
+    String packageName, className;
+    void s(String sp){ 
+         specialcount++; 
+        // Console.Write(sp);
+         JavaMetrics.UniqueSpecial.Add(sp);
+    }
+    void id(String s){
+    	identcount++;
+    	JavaMetrics.UniqueIdentifiers.Add(s);
+    	//Console.Write("ID=====>" + s);
+    }
+ }
+@lexer::members {
+	public static int ws = 0;
+	public static int commentcount = 0;
+	
+	
+	public static int constantcount = 0;
+	public static int keywordCount = 0;
+	protected bool enumIsKeyword = true;
+	protected bool assertIsKeyword = true;
+}
+
+// starting point for parsing a java file
+/* The annotations are separated out to make parsing faster, but must be associated with
+   a packageDeclaration or a typeDeclaration (and not an empty one). */
+public compilationUnit
+    :   annotations
+        (   packageDeclaration importDeclaration* typeDeclaration*
+        |   classOrInterfaceDeclaration typeDeclaration*
+        )
+    |   packageDeclaration? importDeclaration* typeDeclaration*
+    ;
+
+packageDeclaration
+    :   'package'{importKWCount++;} qualifiedName ';' { s(";"); importIDCount++; packageName = myID;}
+    ;
+    
+importDeclaration
+    :   'import' {importKWCount++;} 'static'? qualifiedName {importIDCount++;} ('.' {s(".");} '*' {s("*");})? ';' {s(";");}
+    ;
+    
+typeDeclaration
+    :   classOrInterfaceDeclaration
+    |   ';'{s(";");}
+    ;
+    
+classOrInterfaceDeclaration
+    :   classOrInterfaceModifiers (classDeclaration | interfaceDeclaration)
+    ;
+    
+classOrInterfaceModifiers
+    :   classOrInterfaceModifier*
+    ;
+
+classOrInterfaceModifier
+    :   annotation   // class or interface
+    |   'public'     {keywordCount++;JavaMetrics.UniqueKeywords.Add("public");}// class or interface
+    |   'protected'  {keywordCount++;JavaMetrics.UniqueKeywords.Add("protected");}// class or interface
+    |   'private'    {keywordCount++; JavaMetrics.UniqueKeywords.Add("private");}// class or interface
+    |   'abstract'   {keywordCount++;JavaMetrics.UniqueKeywords.Add("abstract");}// class or interface
+    |   'static'     {keywordCount++;JavaMetrics.UniqueKeywords.Add("static");}// class or interface
+    |   'final'      {keywordCount++;JavaMetrics.UniqueKeywords.Add("final");}// class only -- does not apply to interfaces
+    |   'strictfp'   {keywordCount++;JavaMetrics.UniqueKeywords.Add("strictfp");}// class or interface
+    ;
+
+modifiers
+    :   modifier*
+    ;
+
+classDeclaration
+    :   normalClassDeclaration
+    |   enumDeclaration
+    ;
+    
+normalClassDeclaration
+    :   'class' Identifier { className=$Identifier.text; classCount++;}{keywordCount++; JavaMetrics.UniqueKeywords.Add("class"); id($Identifier.text);} typeParameters?
+        ('extends' {keywordCount++;JavaMetrics.UniqueKeywords.Add("extends");}type)? 
+        ('implements' {keywordCount++;JavaMetrics.UniqueKeywords.Add("implements");} typeList )?
+        classBody
+    ;
+    
+typeParameters
+    :   '<'{s("<");} typeParameter (','{s(",");} typeParameter)* '>' {s(">");}
+        ;
+
+typeParameter
+    :   Identifier('extends'{keywordCount++;JavaMetrics.UniqueKeywords.Add("extends");} typeBound)?
+    ;
+        
+typeBound
+    :   type ('&' type)*
+    ;
+
+enumDeclaration
+    :   ENUM Identifier ('implements' {keywordCount++;JavaMetrics.UniqueKeywords.Add("implements");} typeList)? enumBody
+    ;
+
+enumBody
+    :   '{' {s("{");} enumConstants? ','? enumBodyDeclarations? '}' {s("}");}
+    ;
+
+enumConstants
+    :   enumConstant (',' {s(",");} enumConstant)*
+    ;
+    
+enumConstant
+    :   annotations? Identifier arguments? classBody?
+    ;
+    
+enumBodyDeclarations
+    :   ';' (classBodyDeclaration)*
+    ;
+    
+interfaceDeclaration
+    :   normalInterfaceDeclaration
+    |   annotationTypeDeclaration
+    ;
+    
+normalInterfaceDeclaration
+    :   'interface' {keywordCount++;JavaMetrics.UniqueKeywords.Add("interface");} Identifier {id($Identifier.text);} typeParameters? ('extends'{keywordCount++;JavaMetrics.UniqueKeywords.Add("extends");} typeList)? interfaceBody
+    ;
+    
+typeList
+    :   type (',' {s(",");} type)*
+    ;
+    
+classBody
+    :   '{'{s("{");}  classBodyDeclaration* '}'{s("}");}
+    ;
+    
+interfaceBody
+    :   '{'{s("{");} interfaceBodyDeclaration* '}'{s("}");}
+    ;
+
+classBodyDeclaration
+    :   ';' {s(";");}
+    |   'static' ?{keywordCount++;JavaMetrics.UniqueKeywords.Add("static");}   block
+    |   modifiers memberDecl
+    ;
+    
+memberDecl
+    :   {inMethod=true;} genericMethodOrConstructorDecl
+    |   memberDeclaration
+    |   {inMethod=true;} 'void'{keywordCount++;JavaMetrics.UniqueKeywords.Add("void");} Identifier {id($Identifier.text); methodName = $Identifier.text;}  voidMethodDeclaratorRest
+    |   {inMethod=true;} Identifier {{id($Identifier.text);} methodName = $Identifier.text;}  constructorDeclaratorRest
+    |   interfaceDeclaration
+    |   classDeclaration
+    ;
+    
+memberDeclaration
+    :   type ({inMethod=true;} methodDeclaration   | {inMethod=false;} fieldDeclaration)
+    ;
+
+genericMethodOrConstructorDecl
+    :   typeParameters genericMethodOrConstructorRest
+    ;
+    
+genericMethodOrConstructorRest
+    :   (type | 'void') Identifier {if(primitive){id($Identifier.text); }} methodDeclaratorRest
+    |   Identifier {id($Identifier.text); methodName = $Identifier.text;} constructorDeclaratorRest
+    ;
+
+methodDeclaration
+    :   Identifier {// Console.Write("Method=" + $Identifier.text); 
+                     inMethod = true;
+                     methodName = $Identifier.text;
+                    // if(primitive){
+                         id($Identifier.text);
+                         primitive=false;
+                    // }
+                   } methodDeclaratorRest
+    ;
+
+fieldDeclaration
+    :  variableDeclarators ';'{primitive=false; inMethod=false; s(";");}
+    ;
+        
+interfaceBodyDeclaration
+    :   modifiers interfaceMemberDecl
+    |   ';'
+    ;
+
+interfaceMemberDecl
+    :   interfaceMethodOrFieldDecl
+    |   interfaceGenericMethodDecl
+    |   'void'{keywordCount++;JavaMetrics.UniqueKeywords.Add("void");} Identifier { id($Identifier.text);  methodName = $Identifier.text;} voidInterfaceMethodDeclaratorRest
+    |   interfaceDeclaration
+    |   classDeclaration
+    ;
+    
+interfaceMethodOrFieldDecl
+    :   type Identifier { id($Identifier.text);} interfaceMethodOrFieldRest
+    ;
+    
+interfaceMethodOrFieldRest 
+    :   constantDeclaratorsRest ';' {s(";");}
+    |   interfaceMethodDeclaratorRest
+    ;
+    
+methodDeclaratorRest
+    :   formalParameters ('[' {s("[");} ']'{s("]");})*
+        ('throws' {keywordCount++;JavaMetrics.UniqueKeywords.Add("throws");} qualifiedNameList)?
+        (   methodBody
+        |   ';'
+        )
+    ;
+    
+voidMethodDeclaratorRest
+    :   formalParameters ('throws'{keywordCount++;JavaMetrics.UniqueKeywords.Add("throws");} qualifiedNameList)?
+        (   methodBody
+        |   ';' {s(";");}
+        )
+    ;
+    
+interfaceMethodDeclaratorRest
+    :  formalParameters ('[' {s("[");} ']' {s("]");})* ('throws'{keywordCount++;JavaMetrics.UniqueKeywords.Add("throws");} qualifiedNameList)? ';' {s(";");}
+    ;
+    
+interfaceGenericMethodDecl
+    :   typeParameters (type | 'void' {keywordCount++;JavaMetrics.UniqueKeywords.Add("void");}) Identifier {if(primitive) id($Identifier.text);}
+        interfaceMethodDeclaratorRest
+    ;
+    
+voidInterfaceMethodDeclaratorRest
+    :  formalParameters ('throws'{keywordCount++;JavaMetrics.UniqueKeywords.Add("throws");} qualifiedNameList)? ';' {s(";");}
+    ;
+    
+constructorDeclaratorRest
+    :   formalParameters ('throws' {keywordCount++;JavaMetrics.UniqueKeywords.Add("throws");} qualifiedNameList)? constructorBody
+    ;
+
+constantDeclarator
+    :   Identifier {if(primitive && !inMethod) {id($Identifier.text); /*JavaMetrics.ssc.push(new Symbol($Identifier.text, PrimitiveType, className)); */}} constantDeclaratorRest
+    ;
+    
+variableDeclarators
+    :   variableDeclarator (',' {s(",");} variableDeclarator)* {primitive=false;}
+    ;
+
+variableDeclarator
+    :   variableDeclaratorId ('=' variableInitializer)?
+    ;
+    
+constantDeclaratorsRest
+    :   constantDeclaratorRest (',' {s(",");} constantDeclarator)*
+    ;
+
+constantDeclaratorRest
+    :   ('[' {s("[");} ']' {s("]");})*  '=' variableInitializer
+    ;
+    
+variableDeclaratorId
+    :   Identifier  {
+	if(!inMethod) 
+                       {
+                         identcount++;/*id(new Symbol($Identifier.text,PrimitiveType, className)); 
+                         JavaMetrics.ssc.push(new Symbol($Identifier.text,"unknown", className));*/ 
+                        }
+                      else if(inMethod) {
+							identcount++;
+                       		/*id(new Symbol($Identifier.text,PrimitiveType, methodName)); 
+                         	JavaMetrics.ssm.push(new Symbol($Identifier.text,"unknown", methodName)); */ 
+                                         
+                      }    
+                    } ('['{s("[");} ']' {s("]");})*
+    ;
+
+variableInitializer
+    :   arrayInitializer
+    |   expression
+    ;
+        
+arrayInitializer
+    :   '{' {s("{");}(variableInitializer (',' {s(",");} variableInitializer)* (',')? )? '}'{s("}");}
+    ;
+
+modifier
+    :   annotation
+    |   'public'  {keywordCount++;JavaMetrics.UniqueKeywords.Add("public");}
+    |   'protected' {keywordCount++;JavaMetrics.UniqueKeywords.Add("protected");}
+    |   'private' {keywordCount++; JavaMetrics.UniqueKeywords.Add("private");}
+    |   'static' 	{keywordCount++; JavaMetrics.UniqueKeywords.Add("static");}
+    |   'abstract'	{keywordCount++;JavaMetrics.UniqueKeywords.Add("abstract");}
+    |   'final'		{keywordCount++;JavaMetrics.UniqueKeywords.Add("final");}
+    |   'native'    {keywordCount++;JavaMetrics.UniqueKeywords.Add("native");}
+    |   'synchronized' {keywordCount++;JavaMetrics.UniqueKeywords.Add("synchronized");}
+    |   'transient'   {keywordCount++;JavaMetrics.UniqueKeywords.Add("transient");}
+    |   'volatile'  {keywordCount++;JavaMetrics.UniqueKeywords.Add("volatile");}
+    |   'strictfp'  {keywordCount++;JavaMetrics.UniqueKeywords.Add("strictfp");}
+    ;
+
+packageOrTypeName
+    :   qualifiedName
+    ;
+
+enumConstantName
+    :   Identifier {if(primitive) id($Identifier.text);}
+    ;
+
+typeName
+    :   qualifiedName
+    ;
+
+type
+	:	classOrInterfaceType ('[' {s("[");} ']' {s("]");})* 
+	|	primitiveType {primitive=true;}('[' {s("[");} ']' {s("]");})*
+	;
+
+
+
+classOrInterfaceType
+	:	I7=Identifier { id($I7.text);} typeArguments? ('.' {s(".");} Identifier typeArguments? )* 
+	;
+
+primitiveType
+    :   'bool'	{keywordCount++; PrimitiveType = "bool"; JavaMetrics.UniqueKeywords.Add("bool");}
+    |   'char'		{keywordCount++;  PrimitiveType = "char";  JavaMetrics.UniqueKeywords.Add("char");}
+    |   'byte'		{keywordCount++;  PrimitiveType = "byte"; JavaMetrics.UniqueKeywords.Add("byte");}
+    |   'short'		{keywordCount++;  PrimitiveType = "short"; JavaMetrics.UniqueKeywords.Add("short");}
+    |   'int' 		{keywordCount++;  PrimitiveType = "int"; JavaMetrics.UniqueKeywords.Add("int");}
+    |   'long'		{keywordCount++;  PrimitiveType = "long"; JavaMetrics.UniqueKeywords.Add("long");}
+    |   'float'		{keywordCount++;  PrimitiveType = "float"; JavaMetrics.UniqueKeywords.Add("float");}
+    |   'double' 	{keywordCount++;  PrimitiveType = "double"; JavaMetrics.UniqueKeywords.Add("double");}
+    ;
+
+variableModifier
+    :   'final'{keywordCount++;JavaMetrics.UniqueKeywords.Add("final");}
+    |   annotation
+    ;
+
+typeArguments
+    :   '<' {s("<");} typeArgument (','{s(",");} typeArgument)* '>'{s(">");}
+    ;
+    
+typeArgument
+    :   type
+    |   '?' (('extends'{keywordCount++;JavaMetrics.UniqueKeywords.Add("extends");} | 'super' {keywordCount++;JavaMetrics.UniqueKeywords.Add("super");}) type)? 
+    ;
+    
+qualifiedNameList
+    :   qualifiedName (',' {s(",");} qualifiedName)*
+    ;
+
+formalParameters
+    :   '(' {s("(");} formalParameterDecls? ')' {s(")");} 
+    ;
+    
+formalParameterDecls
+    :   variableModifiers type formalParameterDeclsRest {primitive = false;}
+    ;
+    
+formalParameterDeclsRest
+    :   variableDeclaratorId (',' {s(",");} formalParameterDecls)?
+    |   '...' variableDeclaratorId
+    ;
+    
+methodBody
+    :  block {Console.Write("McCabe for " + methodName + " = " + (mmc+1)); JavaMetrics.MccabeValues.Add(methodName + " = " + (mmc+1));mmc = 0;}
+    ;
+
+constructorBody
+    :   '{'{s("{");} explicitConstructorInvocation? blockStatement* '}' {s("}");Console.Write("McCabe for " + methodName + " = " + (mmc+1)); JavaMetrics.MccabeValues.Add(methodName + " = " + (mmc+1)); mmc = 0;}
+    ;
+
+explicitConstructorInvocation
+    :   nonWildcardTypeArguments? ('this'{keywordCount++;JavaMetrics.UniqueKeywords.Add("this");} | 'super' {keywordCount++;JavaMetrics.UniqueKeywords.Add("super");}) arguments ';' {s(";");}
+    |   primary '.' {s(".");}nonWildcardTypeArguments? 'super' arguments ';' {s(";");}
+    ;
+
+
+qualifiedName
+    :   I1=Identifier {myID  = $I1.text;} ('.' {s(".");} I2=Identifier {myID+="."+$I2.text;})* 
+    ;
+    
+literal 
+    :   integerLiteral
+    |   FloatingPointLiteral  {JavaMetrics.UniqueConstants.Add($FloatingPointLiteral.text);}
+    |   CharacterLiteral {JavaMetrics.UniqueConstants.Add($CharacterLiteral.text);} 
+    |   StringLiteral {JavaMetrics.UniqueConstants.Add($StringLiteral.text);}
+    |   boolLiteral
+    |   'null' {keywordCount++;JavaMetrics.UniqueKeywords.Add("null");}
+    ;
+
+integerLiteral
+    :   HexLiteral { JavaMetrics.UniqueConstants.Add($HexLiteral.text);}
+    |   OctalLiteral { JavaMetrics.UniqueConstants.Add($OctalLiteral.text);}
+    |   DecimalLiteral {JavaMetrics.UniqueConstants.Add($DecimalLiteral.text);}
+    ;
+
+boolLiteral
+    :   'true' {keywordCount++;JavaMetrics.UniqueKeywords.Add("true");}
+    |   'false'{keywordCount++;JavaMetrics.UniqueKeywords.Add("false");}
+    ;
+
+// ANNOTATIONS
+
+annotations
+    :   annotation+
+    ;
+
+annotation
+    :   '@' annotationName ( '(' {s("(");} ( elementValuePairs | elementValue )? ')' {s(")");}  )?
+    ;
+    
+annotationName
+    : t1= Identifier {id($t1.text); }('.' {s(".");} Identifier)*
+    ;
+
+elementValuePairs
+    :   elementValuePair (',' {s(",");} elementValuePair)*
+    ;
+
+elementValuePair
+    :   Identifier { id($Identifier.text);} '=' {s("=");} elementValue
+    ;
+    
+elementValue
+    :   conditionalExpression
+    |   annotation
+    |   elementValueArrayInitializer
+    ;
+    
+elementValueArrayInitializer
+    :   '{' {s("{");}(elementValue (','{s(",");} elementValue)*)? (',')?  '}'{s("}");}
+    ;
+    
+annotationTypeDeclaration
+    :   '@' 'interface' Identifier { id($Identifier.text);} annotationTypeBody
+    ;
+    
+annotationTypeBody
+    :   '{' {s("{");}(annotationTypeElementDeclaration)* '}'{s("}");}
+    ;
+    
+annotationTypeElementDeclaration
+    :   modifiers annotationTypeElementRest
+    ;
+    
+annotationTypeElementRest
+    :   type annotationMethodOrConstantRest ';'
+    |   normalClassDeclaration ';'?
+    |   normalInterfaceDeclaration ';'?
+    |   enumDeclaration ';'?
+    |   annotationTypeDeclaration ';'?
+    ;
+    
+annotationMethodOrConstantRest
+    :   annotationMethodRest
+    |   annotationConstantRest
+    ;
+    
+annotationMethodRest
+    :   Identifier {id($Identifier.text);} '(' {s("(");}  ')'{s(")");}  defaultValue?
+    ;
+    
+annotationConstantRest
+    :   variableDeclarators
+    ;
+    
+defaultValue
+    :   'default' {keywordCount++;JavaMetrics.UniqueKeywords.Add("default");} elementValue
+    ;
+
+// STATEMENTS / BLOCKS
+
+block
+    :   '{' {s("{");} blockStatement* '}' {s("}");}
+    ;
+    
+blockStatement
+    :    localVariableDeclarationStatement
+    |   classOrInterfaceDeclaration
+    |  statement 
+    ;
+    
+localVariableDeclarationStatement
+    :    localVariableDeclaration {primitive=false;}';' {s(";");}
+    ;
+
+localVariableDeclaration
+    :   variableModifiers type variableDeclarators {primitive = false;}
+    ;
+    
+variableModifiers
+    :   variableModifier*
+    ;
+
+statement
+    : block
+    |   ASSERT expression (':' expression)? ';'
+    |   'if'{keywordCount++;JavaMetrics.UniqueKeywords.Add("if"); mmc++;} parExpression statement (options {k=1;}:'else' {keywordCount++;JavaMetrics.UniqueKeywords.Add("else");} statement)?
+    |   'for' {keywordCount++;JavaMetrics.UniqueKeywords.Add("for");mmc++;} '(' {s("(");} forControl ')' {s("}");} statement
+    |   'while'{keywordCount++;JavaMetrics.UniqueKeywords.Add("while"); mmc++;} parExpression  statement
+    |   'do'{keywordCount++;JavaMetrics.UniqueKeywords.Add("do");mmc++;} statement 'while' {keywordCount++;JavaMetrics.UniqueKeywords.Add("while");} parExpression ';' {s(";");}
+    |   'try'{keywordCount++;JavaMetrics.UniqueKeywords.Add("try");} block
+        ( catches 'finally' {keywordCount++;JavaMetrics.UniqueKeywords.Add("finally");}block
+        | catches
+        |   'finally'{keywordCount++;JavaMetrics.UniqueKeywords.Add("finally");} block
+        )
+    |   'switch'{keywordCount++;JavaMetrics.UniqueKeywords.Add("switch");}  parExpression '{' switchBlockStatementGroups '}'
+    |   'synchronized'{keywordCount++;JavaMetrics.UniqueKeywords.Add("synchronized");} parExpression block
+    |   'return' {keywordCount++;JavaMetrics.UniqueKeywords.Add("return");} expression? ';' {s(";");}
+    |   'throw'{keywordCount++;JavaMetrics.UniqueKeywords.Add("throw");} expression ';' {s(";");}
+    |   'break' {keywordCount++;JavaMetrics.UniqueKeywords.Add("break"); Console.Write("FOUND BREAK");}Identifier? {if(primitive) id($Identifier.text);}';' {s(";");}
+    |   'continue' {keywordCount++;JavaMetrics.UniqueKeywords.Add("continue");} Identifier?  { id($Identifier.text);}';' {s(";");}
+    |   ';' {s(";");}
+    |   statementExpression ';'  {s(";");}
+    |   Identifier {if(primitive) id($Identifier.text);} ':' statement
+    ;
+    
+catches
+    :   catchClause (catchClause)*
+    ;
+    
+catchClause
+    :   'catch' {keywordCount++;JavaMetrics.UniqueKeywords.Add("catch");}'(' {s("(");} formalParameter ')'{s(")");}  block
+    ;
+
+formalParameter
+    :   variableModifiers type variableDeclaratorId
+    ;
+        
+switchBlockStatementGroups
+    :   (switchBlockStatementGroup)*
+    ;
+    
+/* The change here (switchLabel -> switchLabel+) technically makes this grammar
+   ambiguous; but with appropriately greedy parsing it yields the most
+   appropriate AST, one in which each group, except possibly the last one, has
+   labels and statements. */
+switchBlockStatementGroup
+    :   switchLabel+ blockStatement*
+    ;
+    
+switchLabel
+    :   'case'{keywordCount++;JavaMetrics.UniqueKeywords.Add("case");mmc++;} constantExpression ':'
+    |   'case' {keywordCount++;JavaMetrics.UniqueKeywords.Add("case");mmc++;} enumConstantName ':'
+    |   'default' {keywordCount++;JavaMetrics.UniqueKeywords.Add("defult");mmc++;} ':'
+    ;
+    
+forControl
+options {k=3;} // be efficient for common case: for (ID ID : ID) ...
+    :   enhancedForControl
+    |   forInit? ';' expression? ';' forUpdate?
+    ;
+
+forInit
+    :   localVariableDeclaration 
+    |   expressionList
+    ;
+    
+enhancedForControl
+    :   variableModifiers type Identifier { id($Identifier.text);} ':' expression
+    ;
+
+forUpdate
+    :   expressionList
+    ;
+
+// EXPRESSIONS
+
+parExpression
+    :   '('{s("(");} expression ')'{s(")");} 
+    ;
+    
+expressionList
+    :   expression (','{s(",");} expression)*
+    ;
+
+statementExpression
+    :   expression 
+    ;
+    
+constantExpression
+    :   expression
+    ;
+    
+expression
+    :   conditionalExpression (assignmentOperator expression)?
+    ;
+    
+assignmentOperator
+    :   '=' {s("=");}
+    |   '+='
+    |   '-='
+    |   '*='
+    |   '/='
+    |   '&='
+    |   '|='
+    |   '^='
+    |   '%='
+    |   ('<' '<' '=')=> t1='<' t2='<' t3='=' 
+        {true /*$t1.Line == $t2.Line &&
+          $t1.CharPositionInLine + 1 == $t2.CharPositionInLine && 
+          $t2.Line == $t3.Line && 
+          $t2.CharPositionInLine + 1 == $t3.CharPositionInLine */}?
+    |   ('>' '>' '>' '=')=> t1='>' t2='>' t3='>' t4='='
+        { true/*$t1.Line == $t2.Line && 
+          $t1.CharPositionInLine + 1 == $t2.CharPositionInLine &&
+          $t2.Line == $t3.Line && 
+          $t2.CharPositionInLine + 1 == $t3.CharPositionInLine &&
+          $t3.Line == $t4.Line && 
+          $t3.CharPositionInLine + 1 == $t4.CharPositionInLine */}?
+    |   ('>' '>' '=')=> t1='>' t2='>' t3='='
+        {true /*$t1.Line == $t2.Line && 
+          $t1.CharPositionInLine + 1 == $t2.CharPositionInLine && 
+          $t2.Line == $t3.Line && 
+          $t2.CharPositionInLine + 1 == $t3.CharPositionInLine*/ }?
+    ;
+
+conditionalExpression
+    :   conditionalOrExpression ( '?' expression ':' expression )?
+    ;
+
+conditionalOrExpression
+    :   conditionalAndExpression ( '||' {s("||"); mmc++;} conditionalAndExpression )*
+    ;
+
+conditionalAndExpression
+    :   inclusiveOrExpression ( '&&' {s("&&"); mmc++;} inclusiveOrExpression )*
+    ;
+
+inclusiveOrExpression
+    :   exclusiveOrExpression ( '|' {s("|"); } exclusiveOrExpression )*
+    ;
+
+exclusiveOrExpression
+    :   andExpression ( '^' andExpression )*
+    ;
+
+andExpression
+    :   equalityExpression ( '&' {s("&");} equalityExpression )*
+    ;
+
+equalityExpression
+    :   instanceOfExpression ( ('==' {s("==");}| '!=' {s("!=");}) instanceOfExpression )*
+    ;
+
+instanceOfExpression
+    :   relationalExpression ('instanceof' {keywordCount++;JavaMetrics.UniqueKeywords.Add("instanceof");}type)?
+    ;
+
+relationalExpression
+    :   shiftExpression ( relationalOp shiftExpression )*
+    ;
+    
+relationalOp
+    :   ('<' '=')=> t1='<' t2='=' 
+        {true/* $t1.Line == $t2.Line && 
+          $t1.CharPositionInLine + 1 == $t2.CharPositionInLine*/ }?
+    |   ('>' '=')=> t1='>' t2='=' 
+        {true/* $t1.Line == $t2.Line && 
+          $t1.CharPositionInLine + 1 == $t2.CharPositionInLine*/ }?
+    |   '<' {s("<");}
+    |   '>' {s(">");}
+    ;
+
+shiftExpression
+    :   additiveExpression ( shiftOp additiveExpression )*
+    ;
+
+shiftOp
+    :   ('<' '<')=> t1='<' t2='<' 
+        {true/* $t1.Line == $t2.Line && 
+          $t1.CharPositionInLine + 1 == $t2.CharPositionInLine*/ }?
+    |   ('>' '>' '>')=> t1='>' t2='>' t3='>' 
+        { true/*$t1.Line == $t2.Line && 
+          $t1.CharPositionInLine + 1 == $t2.CharPositionInLine &&
+          $t2.Line == $t3.Line && 
+          $t2.CharPositionInLine + 1 == $t3.CharPositionInLine */}?
+    |   ('>' '>')=> t1='>' t2='>'
+        {true/* $t1.Line == $t2.Line && 
+          $t1.CharPositionInLine + 1 == $t2.CharPositionInLine*/ }?
+    ;
+
+
+additiveExpression
+    :   multiplicativeExpression ( ('+' {s("+");}| '-' {s("-");}) multiplicativeExpression )*
+    ;
+
+multiplicativeExpression
+    :   unaryExpression ( ( '*' {s("*");} | '/' {s("/");} | '%' {s("\%");}) unaryExpression )*
+    ;
+    
+unaryExpression
+    :   '+' unaryExpression
+    |   '-' unaryExpression
+    |   '++' unaryExpression
+    |   '--' unaryExpression
+    |   unaryExpressionNotPlusMinus
+    ;
+
+unaryExpressionNotPlusMinus
+    :   '~' unaryExpression
+    |   '!' unaryExpression
+    |   castExpression
+    |   primary selector* ('++' {s("++");}|'--' {s("--");})?
+    ;
+//the big weenie
+castExpression
+    :  '('{s("(");} primitiveType ')' unaryExpression
+    |  '('{s("(");} (type | expression) ')' unaryExpressionNotPlusMinus
+    ;
+
+primary
+    :   parExpression
+    |   'this' {keywordCount++;JavaMetrics.UniqueKeywords.Add("this");}('.' {s(".");} Identifier)* identifierSuffix? 
+    |   'super'{keywordCount++;JavaMetrics.UniqueKeywords.Add("super");} superSuffix
+    |   literal
+    |   'new'{keywordCount++;JavaMetrics.UniqueKeywords.Add("new");} creator
+    |   I1=Identifier {{id($I1.text);}} ('.' {s(".");} I4=Identifier)*  identifierSuffix? 
+    |   primitiveType ('['{s("[");} ']'{s("]");})* '.' 'class' {keywordCount++;JavaMetrics.UniqueKeywords.Add("class");}
+    |   'void'{keywordCount++;JavaMetrics.UniqueKeywords.Add("void");} '.' {s(".");} 'class'{keywordCount++;JavaMetrics.UniqueKeywords.Add("class");}
+    ;
+
+identifierSuffix
+    :   ('[' {s("[");} ']' {s("]");})+ '.' {s(".");} 'class'{keywordCount++;JavaMetrics.UniqueKeywords.Add("class");}
+    |   ('[' {s("[");} expression ']' {s("]");})+ // can also be matched by selector, but do here
+    |   arguments 
+    |   '.' {s(".");} 'class'{keywordCount++;JavaMetrics.UniqueKeywords.Add("class");}
+    |   '.' {s(".");} explicitGenericInvocation
+    |   '.' {s(".");} 'this'{keywordCount++;JavaMetrics.UniqueKeywords.Add("this");}
+    |   '.' {s(".");} 'super' arguments {keywordCount++;JavaMetrics.UniqueKeywords.Add("super");}
+    |   '.' {s(".");} 'new' {keywordCount++;JavaMetrics.UniqueKeywords.Add("new");}innerCreator
+    ;
+
+creator
+    :   nonWildcardTypeArguments createdName classCreatorRest
+    |   createdName (arrayCreatorRest | classCreatorRest)
+    ;
+
+createdName
+    :  {constructorcall=true;}  classOrInterfaceType
+    |   primitiveType {primitive = true;}
+    ;
+    
+innerCreator
+    :   nonWildcardTypeArguments? Identifier classCreatorRest
+    ;
+
+arrayCreatorRest
+    :   '['{s("[");}
+        (   ']' ('['{s("[");} ']' {s("]");})* arrayInitializer
+        |   expression ']' {s("]");} ('['{s("[");} expression ']' {s("]");})* ('['{s("[");} ']'{s("]");})*
+        )
+    ;
+
+classCreatorRest
+    :  {constructorcall=false;} arguments classBody?
+    ;
+    
+explicitGenericInvocation
+    :   nonWildcardTypeArguments Identifier{if(primitive) id($Identifier.text);} arguments
+    ;
+    
+nonWildcardTypeArguments
+    :   '<' {s("<");} typeList '>' {s(">");}
+    ;
+    
+selector
+    :   '.' {s(".");} Identifier  {if(primitive) id($Identifier.text);} arguments?
+    |   '.' {s(".");} 'this' {keywordCount++;JavaMetrics.UniqueKeywords.Add("this");}
+    |   '.' {s(".");} 'super' superSuffix {keywordCount++;JavaMetrics.UniqueKeywords.Add("super");}
+    |   '.' {s(".");} 'new'  {keywordCount++;JavaMetrics.UniqueKeywords.Add("new");} innerCreator
+    |   '[' {s("[");} expression ']' {s("]");}
+    ;
+    
+superSuffix
+    :   arguments
+    |   '.' {s(".");} Identifier {if(primitive) id($Identifier.text);} arguments?
+    ;
+
+arguments
+    :   '(' {s("(");}expressionList? ')'{s(")");} 
+    ;
+
+// LEXER
+
+HexLiteral : '0' ('x'|'X') HexDigit+ IntegerTypeSuffix? {constantcount++;} ;
+
+DecimalLiteral : ('0' | '1'..'9' '0'..'9'*) IntegerTypeSuffix? {constantcount++; };
+
+OctalLiteral : '0' ('0'..'7')+ IntegerTypeSuffix? {constantcount++;};
+
+fragment
+HexDigit : ('0'..'9'|'a'..'f'|'A'..'F') ;
+
+fragment
+IntegerTypeSuffix : ('l'|'L') ;
+
+FloatingPointLiteral
+    :   ('0'..'9')+ '.'  ('0'..'9')* Exponent? FloatTypeSuffix? {constantcount++;}
+    |   '.' ('0'..'9')+ Exponent? FloatTypeSuffix? {constantcount++;}
+    |   ('0'..'9')+ Exponent FloatTypeSuffix? {constantcount++;}
+    |   ('0'..'9')+ FloatTypeSuffix {constantcount++;}
+    ;
+
+fragment
+Exponent : ('e'|'E') ('+'|'-')? ('0'..'9')+ ;
+
+fragment
+FloatTypeSuffix : ('f'|'F'|'d'|'D') ;
+
+CharacterLiteral
+    :   '\'' ( EscapeSequence | ~('\''|'\\') ) '\'' {constantcount++; }
+    ;
+
+StringLiteral
+    :  '"' ( EscapeSequence | ~('\\'|'"') )* '"' {constantcount++;}
+    ;
+
+fragment
+EscapeSequence
+    :   '\\' ('b'|'t'|'n'|'f'|'r'|'\"'|'\''|'\\')
+    |   UnicodeEscape
+    |   OctalEscape
+    ;
+
+fragment
+OctalEscape
+    :   '\\' ('0'..'3') ('0'..'7') ('0'..'7')
+    |   '\\' ('0'..'7') ('0'..'7')
+    |   '\\' ('0'..'7')
+    ;
+
+fragment
+UnicodeEscape
+    :   '\\' 'u' HexDigit HexDigit HexDigit HexDigit
+    ;
+
+ENUM:   'enum' 
+    ;
+    
+ASSERT
+    :   'assert' 
+    ;
+    
+Identifier 
+    :  Letter (Letter |JavaIDDigit)* 
+        ;
+
+/**I found this char range in JavaCC's grammar, but Letter and Digit overlap.
+   Still works, but...
+ */
+fragment
+Letter
+    :  '\u0024' |
+       '\u0041'..'\u005a' |
+       '\u005f' |
+       '\u0061'..'\u007a' |
+       '\u00c0'..'\u00d6' |
+       '\u00d8'..'\u00f6' |
+       '\u00f8'..'\u00ff' |
+       '\u0100'..'\u1fff' |
+       '\u3040'..'\u318f' |
+       '\u3300'..'\u337f' |
+       '\u3400'..'\u3d2d' |
+       '\u4e00'..'\u9fff' |
+       '\uf900'..'\ufaff'
+    ;
+
+fragment
+JavaIDDigit
+    :  '\u0030'..'\u0039' |
+       '\u0660'..'\u0669' |
+       '\u06f0'..'\u06f9' |
+       '\u0966'..'\u096f' |
+       '\u09e6'..'\u09ef' |
+       '\u0a66'..'\u0a6f' |
+       '\u0ae6'..'\u0aef' |
+       '\u0b66'..'\u0b6f' |
+       '\u0be7'..'\u0bef' |
+       '\u0c66'..'\u0c6f' |
+       '\u0ce6'..'\u0cef' |
+       '\u0d66'..'\u0d6f' |
+       '\u0e50'..'\u0e59' |
+       '\u0ed0'..'\u0ed9' |
+       '\u1040'..'\u1049'
+   ;
+
+WS  :  (' '{ws++;}|'\r'{ws++;}|'\t'{ws++;}|'\u000C'{ws++;}|'\n'{ws++;}) {$channel=Hidden;}
+    ;
+
+COMMENT
+    :   '/*' ( options {greedy=false;} : .{commentcount++;} )* '*/' {$channel=Hidden;}
+    ;
+
+LINE_COMMENT
+    : '//' (~('\n' |'\r'){commentcount++;})* '\r'? '\n' {$channel=Hidden;}
+    ;
+
+	
